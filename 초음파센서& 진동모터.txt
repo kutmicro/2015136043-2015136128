@@ -1,0 +1,65 @@
+int Lmot = 10,Rmot = 11;
+
+int Lecho = 6, Ltrig = 7, Recho = 8, Rtrig = 9;
+
+int Ldis = 0, Rdis = 0;
+
+void setup(){
+
+  Serial.begin(9600);
+
+  pinMode(Ltrig,OUTPUT);pinMode(Rtrig,OUTPUT);
+
+  pinMode(Lecho,INPUT);pinMode(Recho,INPUT);
+
+  pinMode(Lmot,OUTPUT);pinMode(Rmot,OUTPUT);
+
+  constrain(Ldis,0,1500);constrain(Rdis,0,1500);
+
+}
+
+void loop()
+
+{
+
+ digitalWrite(Ltrig,HIGH);//Left
+
+ delayMicroseconds(10);
+
+ digitalWrite(Ltrig,LOW);
+
+ Ldis = pulseIn(Lecho,HIGH)/58.2;
+
+ delayMicroseconds(2);
+
+ digitalWrite(Rtrig,HIGH);//Right
+
+ delayMicroseconds(10);
+
+ digitalWrite(Rtrig,LOW);
+
+ Rdis = pulseIn(Recho,HIGH)/58.2;
+
+ delayMicroseconds(2);
+
+ Serial.print("Ldis :"); Serial.print(Ldis);
+
+ Serial.print(" Rdis :"); Serial.println(Rdis);
+
+ 
+
+ if( (Ldis>5 & Ldis<1000) | (Rdis>5 & Rdis<1000) ){
+
+  if(Ldis>5 & Ldis<1000){Ldis = map(1500 - Ldis,0,1500,0,160);analogWrite(Lmot,Ldis);}
+
+  if(Rdis>5 & Rdis<1000){Rdis = map(1500 - Rdis,0,1500,0,160);analogWrite(Rmot,Rdis);}
+
+  delay(300);digitalWrite(Lmot,LOW);digitalWrite(Rmot,LOW);}
+
+  Serial.print("Lmot :"); Serial.print(Ldis);
+
+  Serial.print(" Rmot :"); Serial.println(Rdis);
+
+  Ldis = 0;Rdis = 0;delay(300);
+
+} 
