@@ -1,0 +1,75 @@
+초음파센서<초안>
+
+int ultras_tirg=A5; //초음파1
+int ultras_echo=A4;
+int ultras2_trig=A3; //초음파2
+int ultras2_echo=A2;
+const int M = 9; //진동모터1
+const int M2 = 8; //진동모터2
+
+void setup()
+{
+Serial.begin(9600); //컴퓨터와 통신시작 
+}
+void Sultras()
+{
+long td=0;
+float dist=0;
+pinMode(ultras_tirg, OUTPUT); 
+AnalogWrite(ultras_tirg,LOW); 
+delayMicroseconds(2);
+AnalogWrite(ultras_tirg,HIGH);
+delayMicroseconds(5);
+AnalogWrite(ultras_tirg, LOW);
+pinMode(ultras_echo,INPUT);
+td = pulseIn(ultras_echo, HIGH);
+dist= td/29./2.;
+if(0<=dist<50)
+{
+digitalWrite(M,HIGH);
+
+}
+else if(150>=dist>50)
+{
+digitalWrite(M,LOW);
+
+}
+else if (dist>250)
+{
+digitalWrite(M,LOW);
+
+}
+else
+{
+digitalWrite(M, HIGH);
+
+}
+Serial.print(dist);
+}
+void Sultras2()
+{
+long tds=0;
+float dist2=0;
+pinMode(ultras2_trig, OUTPUT);
+AnalogWrite(ultras2_trig,LOW);
+delayMicroseconds(2);
+AnalogWrite(ultras2_trig,HIGH);
+delayMicroseconds(5);
+AnalogWrite(ultras2_trig, LOW);
+pinMode(ultras2_echo,INPUT);
+tds = pulseIn(ultras2_echo, HIGH);
+dist2= tds/29./2.;
+if(0<=dist2<200)
+{
+digitalWrite(M2,HIGH);
+}else{
+digitalWrite(M2,LOW);
+}
+Serial.print(” “);
+Serial.println(dist2);
+}
+void loop()
+{
+Sultras();
+Sultras2();
+}
